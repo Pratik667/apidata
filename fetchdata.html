@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dummy Api Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+    <table class="table container">
+        <thead>
+            <th>ID</th>
+            <th>AVATAR</th>
+            <th>USERNAME</th>
+            <th>USER TYPE</th>
+            <th>URL</th>
+        </thead>
+        <tbody id="mytabBody"></tbody>
+    </table>
+
+
+    <script>
+        let url = 'https://api.github.com/users';
+        fetch(url)
+        .then(response => response.json())
+        .then(responseData => {            
+            //console.log(responseData);
+            let display = responseData;
+            let userID = [];
+            let userName = [];
+            let avatarUrl = [];
+            let userType = [];
+            let accountType = [];
+            // console.log("For loop");
+            // for(i=0;i<display.length;i++){
+            //     console.log(display[i].login);
+            // }
+            //console.log("For Each loop");
+            display.forEach((user_id) => {               
+                userID.push(user_id.id);
+            });
+            display.forEach((login_name) => {                 
+                userName.push(login_name.login);
+            });
+            display.forEach((avatar) => {              
+                avatarUrl.push(avatar.avatar_url)
+            });
+            display.forEach((user_type) => { 
+                userType.push(user_type.type); 
+            });
+            display.forEach((account_url) => { 
+                accountType.push(account_url.html_url); 
+            });
+
+            // console.log(userID); 
+            // console.log(userName); 
+            // console.log(avatarUrl); 
+            // console.log(userType);
+            // console.log(accountType);
+
+            let table_body = document.getElementById('mytabBody');
+
+            for(let i=0;i<display.length;i++){
+                var row = `<tr>
+                    <td>`+userID[i]+`</td>
+                    <td><img src="`+avatarUrl[i]+`" width="50" height="50" /></td>
+                    <td>`+userName[i]+`</td>               
+                    <td>`+userType[i]+`</td>
+                    <td><a href="`+accountType[i]+`" target="_blank" class="btn btn-primary">`+userName[i]+`</a></td>
+                    </tr>`;
+
+                table_body.innerHTML += row;
+            }
+        })
+    </script>
+</body>
+</html>
